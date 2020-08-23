@@ -10,7 +10,7 @@ public static class Globals
     public const float SheepHealthLossPerTurn = 0.5f;
     public const float SheepHealthGainOnGrass = 1f;
     public const float TileFoodLossWithSheep = 2f;
-    public const float TileFoodGainPerTurn = 1f;
+    public const float TileFoodGainPerTurn = 0.25f;
     public static  Vector2Int[] SheepStartLocations =
     {
         new Vector2Int(1, 1),
