@@ -8,6 +8,10 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
+        Camera.main.transform.position =
+            new Vector3(Globals.GridWidth / 2.0f, Globals.GridHeight / 2.0f - 0.5f, -10);
+        Camera.main.orthographicSize = Globals.GridWidth / 2.0f + 2.0f;
+
         //Instantiate grass.
         for (int i = 0; i < Globals.GridWidth; i++)
         {
@@ -15,6 +19,7 @@ public class GameManager : MonoBehaviour
             {
                 var go = Instantiate(GrassPrefab, new Vector3(i + 0.5f, j + 0.5f, 0), Quaternion.identity);
                 Globals.Grid[i, j] = go.GetComponent<Grass>();
+                Globals.Grid[i, j].Food = Random.Range(1, Globals.TileFoodMax);
             }
         }
 
@@ -27,12 +32,5 @@ public class GameManager : MonoBehaviour
             sheep.UpdatePosition();
             Globals.Sheep.Add(sheep);
         }
-
-
-    }
-
-    void Update()
-    {
-        
     }
 }

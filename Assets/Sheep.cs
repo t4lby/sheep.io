@@ -3,11 +3,15 @@ using System.Collections.Generic;
 
 public class Sheep : MonoBehaviour
 {
+    public GameObject HealthObject;
+    public Sprite[] HealthSprites;
+
     public float Health;
 
     public Vector2Int Pos;
 
     public bool JustMoved;
+    public bool Dead;
 
     public GameObject MoveIndicatorPrefab;
 
@@ -15,16 +19,65 @@ public class Sheep : MonoBehaviour
 
     bool moving;
     bool initMove;
+    Vector3 heartInitPos;
+
+    private void Awake()
+    {
+        heartInitPos = HealthObject.transform.localPosition;
+    }
+
+    private void Update()
+    {
+        if (Health > 0)
+        {
+            HealthObject.transform.localPosition = heartInitPos +
+                new Vector3(0, Mathf.Sin(Time.time * Globals.SheepHealthMax * 2 / Health) / 16);
+        }
+        else
+        {
+            HealthObject.transform.localPosition = heartInitPos;
+        }
+    }
 
     public void ProcessTurn()
     {
         UpdatePosition();
 
-        if (Globals.Grid[Pos.x, Pos.y].Food > 1 && !JustMoved)
+        if (Globals.Grid[Pos.x, Pos.y].Food >= 2 && !JustMoved)
         {
             Globals.Grid[Pos.x, Pos.y].Food -= Globals.TileFoodLossWithSheep;
             Health += Globals.SheepHealthGainOnGrass;
         }
+        else
+        {
+            Health -= Globals.SheepHealthLossPerTurn;
+        }
+
+        if (JustMoved)
+        {
+            JustMoved = false;
+        }
+
+        if (Health > Globals.SheepHealthMax)
+        {
+            Health = Globals.SheepHealthMax;
+        }
+
+        if (Health <= 0)
+        {
+            Health = 0;
+            Die();
+        }
+
+        HealthObject.GetComponent<SpriteRenderer>().sprite =
+            HealthSprites[Mathf.CeilToInt(Health)];
+    }
+
+    public void Die()
+    {
+        Dead = true;
+        //flip sheep over.
+        GetComponent<SpriteRenderer>().flipY = true;
     }
 
     public void UpdatePosition()
@@ -34,6 +87,10 @@ public class Sheep : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (Dead)
+        {
+            return; //skip movement if sheep is dead.
+        }
         //spawn movement indicators.
         initMove = true;
         var up = Instantiate(MoveIndicatorPrefab).GetComponent<Indicator>();

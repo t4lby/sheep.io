@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-
+using UnityScript.Steps;
 
 public static class Globals
 {
@@ -14,12 +14,17 @@ public static class Globals
     public static  Vector2Int[] SheepStartLocations =
     {
         new Vector2Int(1, 1),
-        new Vector2Int(0, 2)
+        new Vector2Int(0, 2),
+        new Vector2Int(2, 1),
+        new Vector2Int(3, 3),
+        new Vector2Int(3, 0),
+        new Vector2Int(2, 5)
     };
 
-    public const int TileFoodMax = 4;
-    public const int GridWidth = 3;
-    public const int GridHeight = 3;
+    public const float TileFoodMax = 4;
+    public const float SheepHealthMax = 5;
+    public const int GridWidth = 4;
+    public const int GridHeight = 6;
 
 
 
@@ -28,17 +33,25 @@ public static class Globals
 
     public static void ProcessTurn()
     {
-        for (int i = 0; i < GridWidth; i++)
+        foreach (var sh in Sheep.Where(sh => sh.Dead).ToArray())
         {
-            for (int j = 0; j < GridHeight; j++)
-            {
-                Grid[i, j].ProcessTurn();
-            }
+            Sheep.Remove(sh);
+            GameObject.Destroy(sh.gameObject);
         }
 
         foreach (var sh in Sheep)
         {
             sh.ProcessTurn();
+        }
+
+        for (int i = 0; i < GridWidth; i++)
+        {
+            for (int j = 0; j < GridHeight; j++)
+            {
+                Grid[i, j].SheepOnTile =
+                    Sheep.Where(sh => sh.Pos == new Vector2Int(i, j)).Count() > 0;
+                Grid[i, j].ProcessTurn();
+            }
         }
     }
 }

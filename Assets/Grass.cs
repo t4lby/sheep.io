@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Grass : MonoBehaviour {
@@ -8,6 +9,8 @@ public class Grass : MonoBehaviour {
 
     public float Food;
 
+    public bool SheepOnTile;
+
     private void Start()
     {
         UpdateImage();
@@ -15,7 +18,10 @@ public class Grass : MonoBehaviour {
 
     public void ProcessTurn()
     {
-        Food += Globals.TileFoodGainPerTurn;
+        if (!SheepOnTile)
+        {
+            Food += Globals.TileFoodGainPerTurn;
+        }
 
         if (Food < 1) Food = 1;
         if (Food > Globals.TileFoodMax) Food = Globals.TileFoodMax;
