@@ -515,3 +515,5 @@ MonoBehaviour:
     type: 2}
   SheepPrefab: {fileID: 1578707755342162, guid: 21fe5785878f6a5489a5ec0af0da1733,
     type: 2}
+  BackgroundPrefab: {fileID: 1080604854814204, guid: 62d6676ddf9d5481bbb988d1174b8d8e,
+    type: 2}

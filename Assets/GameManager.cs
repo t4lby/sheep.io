@@ -5,12 +5,16 @@ public class GameManager : MonoBehaviour
 {
     public GameObject GrassPrefab;
     public GameObject SheepPrefab;
+    public GameObject BackgroundPrefab;
 
     public void Start()
     {
         Camera.main.transform.position =
             new Vector3(Globals.GridWidth / 2.0f, Globals.GridHeight / 2.0f - 0.5f, -10);
         Camera.main.orthographicSize = Globals.GridWidth / 2.0f + 2.0f;
+        Globals.Background = Instantiate(BackgroundPrefab).GetComponent<Background>();
+        Globals.Background.transform.position =
+            new Vector3(Globals.GridWidth / 2.0f, Globals.GridHeight / 2.0f);
 
         //Instantiate grass.
         for (int i = 0; i < Globals.GridWidth; i++)
@@ -32,5 +36,7 @@ public class GameManager : MonoBehaviour
             sheep.UpdatePosition();
             Globals.Sheep.Add(sheep);
         }
+
+        
     }
 }

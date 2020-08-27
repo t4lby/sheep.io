@@ -18,18 +18,18 @@ public static class Globals
         new Vector2Int(2, 1),
         new Vector2Int(3, 3),
         new Vector2Int(3, 0),
-        new Vector2Int(2, 5)
+        new Vector2Int(2, 4)
     };
 
     public const float TileFoodMax = 4;
     public const float SheepHealthMax = 5;
-    public const int GridWidth = 4;
-    public const int GridHeight = 6;
-
+    public const int GridWidth = 5;
+    public const int GridHeight = 5;
 
 
     public static Grass[,] Grid = new Grass[GridWidth, GridHeight];
     public static List<Sheep> Sheep = new List<Sheep>();
+    public static Background Background;
 
     public static void ProcessTurn()
     {
@@ -53,5 +53,7 @@ public static class Globals
                 Grid[i, j].ProcessTurn();
             }
         }
+
+        Background.ProcessTurn();
     }
 }
